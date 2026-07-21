@@ -1,15 +1,19 @@
 import { Composer } from "grammy";
+import { registerMainMenuItem, inlineButton, inlineKeyboard } from "../toolkit/index.js";
 
-// SCAFFOLD — generated from the bot blueprint BEFORE the agent runs.
-// Keep a LIVE registration (.command / .callbackQuery / …) so this feature is
-// never an empty stub. Replace the reply body with real logic + copy; if you
-// change the user-facing text, update tests/specs to match EXACTLY.
-// Do NOT rewrite src/bot.ts — buildBot() already auto-loads this module.
+registerMainMenuItem({ label: "📋 Watchlist", data: "watchlist:show", order: 10 });
 
 const composer = new Composer();
 
 composer.command("watchlist", async (ctx) => {
-  await ctx.reply("Show current watchlist");
+  await ctx.reply("Here's your current watchlist — use /price to check live prices.");
+});
+
+composer.callbackQuery("watchlist:show", async (ctx) => {
+  await ctx.answerCallbackQuery();
+  await ctx.editMessageText("Here's your current watchlist:", {
+    reply_markup: inlineKeyboard([[inlineButton("⬅️ Back to menu", "menu:main")]]),
+  });
 });
 
 export default composer;

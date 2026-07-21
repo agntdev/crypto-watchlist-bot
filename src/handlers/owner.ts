@@ -1,15 +1,19 @@
 import { Composer } from "grammy";
+import { registerMainMenuItem, inlineButton, inlineKeyboard } from "../toolkit/index.js";
 
-// SCAFFOLD — generated from the bot blueprint BEFORE the agent runs.
-// Keep a LIVE registration (.command / .callbackQuery / …) so this feature is
-// never an empty stub. Replace the reply body with real logic + copy; if you
-// change the user-facing text, update tests/specs to match EXACTLY.
-// Do NOT rewrite src/bot.ts — buildBot() already auto-loads this module.
+registerMainMenuItem({ label: "👤 Owner stats", data: "owner:stats", order: 100 });
 
 const composer = new Composer();
 
 composer.command("owner", async (ctx) => {
   await ctx.reply("View usage stats and top alerts");
+});
+
+composer.callbackQuery("owner:stats", async (ctx) => {
+  await ctx.answerCallbackQuery();
+  await ctx.editMessageText("View usage statistics and top alerts:", {
+    reply_markup: inlineKeyboard([[inlineButton("⬅️ Back to menu", "menu:main")]]),
+  });
 });
 
 export default composer;
